@@ -1,0 +1,564 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>TaskManager</title>
+    <style>
+        html{
+            height: 100%;
+            width: 100%;
+        }
+
+        body{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* background-color: #FFF8C9; */
+            /* background-color: rgba(0 0 0/0.8); */
+            background-image: linear-gradient(#ecffeb, #d4f4dd);
+            /* color: white; */
+        }
+
+        .wrapper{
+            margin: 50px auto;
+            border: 2px solid #25a18e;
+            width: 300px;
+            padding: 20px;
+            border-radius: 20px;
+            /* background-color: #DFCCFB; */
+            background-image: linear-gradient(#9fffcb, #c7f9cc);
+            box-shadow: 10px 5px 5px #57cc99;
+            position: relative;
+        }
+
+        .header{
+            border: 2px solid #25a18e;
+            border-radius: 20px;
+            background-color: #80ed99;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin-bottom: 15px;
+            box-shadow: 10px 5px 5px #57cc99;
+        }
+
+        .filters{
+            height: 50px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 30px;
+            /* border: 2px solid #6528F7; */
+            /* border-radius: 20px; */
+            /* background-color: #BEADFA; */
+            margin-bottom: 20px; 
+        }
+
+        .filters h1{
+            border: 2px solid #25a18e;
+            padding: 2px 5px;
+            border-radius: 6px;
+            box-shadow: 10px 5px 5px #57cc99;
+        }
+
+        #filter{
+            padding: 5px;
+            outline: none;
+            border-radius: 6px;
+            border: none;
+            box-shadow: 10px 5px 5px #57cc99;
+            text-align: center;
+        }
+
+        .inputs{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #taskBar{
+            width: 60%;
+            padding: 5px;
+            border-radius: 6px;
+            outline: none;
+            border: none;
+            box-shadow: 10px 5px 5px #57cc99;
+            /* border: 1px solid #6528F7; */
+            /* background-color: #B6FFFA; */
+        }
+
+        #priority{
+            padding: 5px;
+            outline: none;
+            border-radius: 6px;
+            border: none;
+            box-shadow: 10px 5px 5px #57cc99;
+            /* border: 1px solid #6528F7; */
+            /* background-color: #B6FFFA; */
+        }
+
+        .fa-square-plus{
+            font-size: 1.4rem;
+            box-shadow: 8px 3px 3px #57cc99;
+        }
+
+        .tasks{
+            display: flex;
+            flex-direction: column;
+            /* border: 1px solid red; */
+            margin-top: 25px;
+        }
+
+        .tasks:empty {
+            display: none;
+        }
+
+        .eachTask{
+            border: 2px solid #25a18e;
+            padding: 5px 10px 5px 10px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            background-color: #80ed99;
+            box-shadow: 10px 5px 5px #57cc99;
+            /* background-image: linear-gradient(to right, #6528F7, #687EFF); */
+            /* color: white; */
+        }
+
+        .taskText{
+            width: 55%;
+            word-break: break-all;
+        }
+
+        .icons{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* border: 1px solid red; */
+            width: 25%;
+        }
+
+        .low{
+            color: #FFC436;
+        }
+
+        .medium{
+            color: #F86F03;
+        }
+
+        .high{
+            color: #FE0000;
+        }
+
+        .alert{
+            border: 2px solid red;
+            height: 150px;
+            width: 300px;
+            border-radius: 20px;
+            background-color: white;
+            position: absolute;
+            top: 100px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transform: scale(0);
+            background-image: linear-gradient(#9fffcb, #c7f9cc);
+            box-shadow: 10px 5px 5px #57cc99;
+        }
+
+        .yesNo{
+            /* border: 1px solid black; */
+            margin-top: 10px;
+            width: 50%;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        #yes, #no{
+            color: white;
+            /* border: 2px solid #25a18e; */
+            padding: 2px 5px;
+            border-radius: 5px;
+            /* background-color: #80ed99; */
+            /* box-shadow: 8px 3px 3px #57cc99; */
+        }
+        #yes{
+            background-color: #FE0000;
+            /* box-shadow: 5px 2px 2px red; */
+        }
+        #no{
+            background-color: rgb(23, 23, 234);
+            /* box-shadow: 5px 2px 2px blue; */
+        }
+
+        .lowPriority{
+            border: 2px solid gold;
+        }
+
+        .mediumPriority{
+            border: 2px solid #F86F03;
+        }
+
+        .highPriority{
+            border: 2px solid red;
+        }
+
+        .done{
+            border: 2px solid rgb(31, 243, 31);
+        }
+
+      @media screen and (min-width: 766px){
+          body{
+            font-size: 1.5rem;
+          }
+          .wrapper{
+              width: 500px;
+            margin: 75px auto;
+          }
+          .header{
+            margin-bottom: 35px;
+          }
+          .filter{
+            margin-bottom: 40px;
+          }
+          .filters h1{
+            padding: 5px 10px;
+          }
+          .tasks{
+            margin-top: 45px;
+          }
+          .eachTask{
+            margin-bottom: 20px;
+            padding: 10px 15px 10px 15px;
+          }
+
+          #filter, #taskBar, #priority{
+            font-size: 1.5rem;
+            padding: 5px 15px;
+          }
+
+          .fa-square-plus{
+            font-size: 2rem;
+          }
+          .check{
+            border: 2px solid red;
+          }
+
+          .alert{
+            border: 2px solid red;
+            height: 200px;
+            width: 400px;
+            top: 150px;
+            left: 50%;
+            translate: -50%;
+            /* transform: scale(0); */
+          }
+        
+      }
+
+    </style>
+</head>
+<body>
+    <section class="wrapper">
+        <div class="header">
+            <h1>TO-DO </h1>
+            <h1><span id="finishedTask">0</span>/<span id="totalTasks">4</span></h1>
+        </div>
+
+        <div class="filters">
+            <h1>Filters</h1>
+            <select name="filter" id="filter">
+                <option value="all" selected>All</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="done">Done</option>
+                <option value="todo">To-Do</option>
+            </select>
+        </div>
+
+    <div class="inputs">
+        <input type="text" id="taskBar" placeholder="Enter your task">
+        <select name="priority" id="priority">
+            <option value="priority" selected>Priority</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>
+        <i class="fa-regular fa-square-plus"></i>
+    </div>
+
+    <div class="tasks"></div>
+    <div class="alert">
+        <h3>Do you really want to delete?</h3>
+        <div class="yesNo">
+            <button type="button" id="yes" value="yes">Yes</button>
+            <button type="button" id="no" value="no">No</button>
+        </div>
+    </section>
+</body>
+
+<script>
+    const KEY = "tasks";
+    let taskObj = [
+        {
+            taskContent : "Start your day, do yoga",
+            taskPriority : "low",
+            taskStatus : false,
+            taskId : 1
+        },
+        {
+            taskContent : "Do morning exercise",
+            taskPriority : "medium",
+            taskStatus : false,
+            taskId : 2
+        },
+        {
+            taskContent : "Go to the gym",
+            taskPriority : "high",
+            taskStatus : false,
+            taskId : 3
+        },
+        {
+            taskContent : "Do assignment",
+            taskPriority : "high",
+            taskStatus : false,
+            taskId : 4
+        }
+    ]
+    if (localStorage[KEY]) {
+        taskObj = JSON.parse(localStorage[KEY]);
+    }
+
+    const TASKS = document.querySelector(".tasks");
+    const ADDBUTTON = document.querySelector(".fa-square-plus");
+    ADDBUTTON.addEventListener("click", addTask);
+    var divId = null;
+    function rander() {
+        let taskHtml = "";
+        taskObj.forEach(element => {
+        taskHtml += `<div id="${element["taskId"]}" class="eachTask">
+                <input type="checkbox" data-btn="check" class="check">
+                <div class="taskText" id="taskText${element["taskId"]}">${element["taskContent"]}</div>
+                <div class="icons">
+                    <i class="fa-solid fa-star ${element["taskPriority"]}"></i>
+                    <i class="fa-solid fa-pen-to-square" data-btn="edit"></i>
+                    <i class="fa-solid fa-trash-can" data-btn="delete"></i>
+                </div>
+            </div>`;
+        // console.log(element["taskId"]);
+        });
+        TASKS.innerHTML = taskHtml;
+
+        let count = 0;
+        let totalCount = 0;
+        taskObj.forEach(ele =>{
+            totalCount++;
+            if(ele["taskStatus"]==true){
+                // console.log(ele["taskStatus"]);
+                document.getElementById(`taskText${ele["taskId"]}`).style.textDecorationLine = "line-through";
+                document.getElementById(ele["taskId"]).children[0].toggleAttribute("checked");
+                count++;
+            }
+        })
+        document.getElementById("finishedTask").textContent = count;
+        document.getElementById("totalTasks").textContent = totalCount;
+        localStorage[KEY] = JSON.stringify(taskObj);
+    }
+
+    rander();
+
+    let saved = false;
+    TASKS.addEventListener("click", function(ev) {
+        if (ev.target.dataset.btn == "check") {
+            let parentDivId = ev.target.closest(".eachTask").id;
+            let textId = `taskText${parentDivId}`;
+            let idx = taskObj.findIndex(obj => {
+                return obj.taskId == parentDivId;
+            });
+            if(taskObj[idx]["taskStatus"] == true){
+                taskObj[idx]["taskStatus"] = false;
+            }
+            else{
+                taskObj[idx]["taskStatus"] = true;
+            }
+            rander();
+        }
+
+        else if (ev.target.dataset.btn == "delete") {
+            console.log("hey there");
+            //show the pop
+            divId = ev.target.closest(".eachTask").id;
+            console.log(divId);
+            alert.style.transform = "scale(1)";
+
+
+            
+            // const ALERT = document.querySelector(".alert");
+            // ALERT.style.transform = "scale(1)";
+            // ALERT.addEventListener("click", function(el){
+            //     if(el.target.value=="yes"){
+            //         let divId = ev.target.closest(".eachTask").id;
+            //         console.log(divId);
+            //         delete taskObj[divId-1];
+            //         ALERT.style.transform = "scale(0)";
+            //         rander();
+            //     }
+            //     else{
+            //         let divId = ev.target.closest(".eachTask").id;
+            //         console.log(divId);
+            //         ALERT.style.transform = "scale(0)";
+            //         rander();
+            //     }
+            // });
+        }
+
+        else if(ev.target.dataset.btn == "edit"){
+            let parentDiv = ev.target.closest(".eachTask");
+            let task = parentDiv.querySelector(".taskText");
+            task.toggleAttribute("contenteditable");
+            let parentDivId = ev.target.closest(".eachTask").id;
+            let textId = `taskText${parentDivId}`;
+            let idx = taskObj.findIndex(obj => {
+                return obj.taskId == parentDivId;
+            });
+
+            task.focus();
+            if(!saved){
+                let btn = ev.target;
+                btn.classList.remove("fa-pen-to-square");
+                btn.classList.add("fa-floppy-disk");
+                saved = true;
+            }else{
+                let btn1 = ev.target;
+                btn1.classList.remove("fa-floppy-disk");
+                btn1.classList.add("fa-pen-to-square");
+                taskObj[idx]["taskContent"] = task.textContent; 
+                saved = false;
+            }
+            console.log(taskObj[idx]["taskContent"]);
+        }
+    });
+
+    let newTaskId = 5;
+    function addTask() {
+        if(document.getElementById("taskBar").value!=""){
+        let taskText = document.getElementById("taskBar").value;
+        let taskPriority = document.getElementById("priority").value;
+        let newTask = {taskContent : taskText, taskPriority : taskPriority, taskStatus : false, taskId : newTaskId};
+        taskObj.push(newTask);
+        let task = document.getElementById("taskBar");
+        task.value = "";
+        newTaskId++;
+        // console.log(taskObj);
+        document.getElementById("totalTasks").textContent ++;
+        rander();
+        }
+        else{
+            return;
+        }
+    }
+
+    const FILTER = document.getElementById("filter");
+    FILTER.addEventListener("change", filters);
+
+    function filters() {
+        let selected = document.getElementById("filter").value;
+        if(selected=="low"){
+            taskObj.forEach(element => {
+                let div = document.getElementById(element["taskId"]);
+                if(div.classList.length>1){
+                    let prev = div.classList[1];
+                    div.classList.remove(prev);
+                }
+                if(element["taskPriority"]=="low"){
+                    div.classList.add("lowPriority");
+                }
+            })
+        }
+        else if(selected=="medium"){
+            taskObj.forEach(element => {
+                let div = document.getElementById(element["taskId"]);
+                if(div.classList.length>1){
+                    let prev = div.classList[1];
+                    div.classList.remove(prev);
+                }
+                if(element["taskPriority"]=="medium"){
+                    div.classList.add("mediumPriority");
+                }
+            })
+        }
+        else if(selected=="high"){
+            taskObj.forEach(element => {
+                let div = document.getElementById(element["taskId"]);
+                if(div.classList.length>1){
+                    let prev = div.classList[1];
+                    div.classList.remove(prev);
+                }
+                if(element["taskPriority"]=="high"){
+                    div.classList.add("highPriority");
+                }
+            })
+        }
+        else if(selected=="done"){
+            taskObj.forEach(element => {
+                let div = document.getElementById(element["taskId"]);
+                    if(div.classList.length>1){
+                        let prev = div.classList[1];
+                        div.classList.remove(prev);
+                    }
+                if(element["taskStatus"]==true){
+                    div.classList.add("done");
+                }
+            })
+        }
+        else if(selected=="todo"){
+            taskObj.forEach(element => {
+                let div = document.getElementById(element["taskId"]);
+                if(div.classList.length>1){
+                    let prev = div.classList[1];
+                    div.classList.remove(prev);
+                }
+                if(element["taskStatus"]==false){
+                    div.classList.add("highPriority");
+                }
+            })
+        }
+        else if(selected=="all"){
+            taskObj.forEach(element => {
+                let div = document.getElementById(element["taskId"]);
+                if(div.classList.length>1){
+                    let prev = div.classList[1];
+                    div.classList.remove(prev);
+                }
+                div.classList.add("mediumPriority");
+                setTimeout(function(){div.classList.remove("mediumPriority")}, 2000);
+            })
+        }
+    }
+
+const alert = document.querySelector(".alert");
+// let confirmStatu = false;
+alert.addEventListener('click',function(el){
+    if(el.target.value=="yes"){
+            console.log(divId);
+            let delIdx = taskObj.findIndex(obj => {
+                return obj.taskId == divId;
+            })
+            console.log(delIdx);
+            // delete taskObj[divId-1];
+            taskObj.splice(delIdx, 1)
+            alert.style.transform = "scale(0)";
+            rander();
+        }
+    else{
+        alert.style.transform = "scale(0)";
+    }
+})
+
+</script>
+</html>
